@@ -3,6 +3,7 @@ package cmd
 import (
 	"github.com/rsteube/carapace"
 	"github.com/rsteube/carapace-bin/pkg/actions/tools/git"
+	"github.com/rsteube/carapace/pkg/style"
 	"github.com/rsteube/carapace/pkg/util"
 	"github.com/spf13/cobra"
 )
@@ -134,6 +135,15 @@ func addDiffFlags(cmd *cobra.Command) {
 	})
 
 	carapace.Gen(cmd).DashAnyCompletion(
-		carapace.ActionFiles(),
+		carapace.ActionCallback(actionFileChanges),
 	)
+}
+
+func actionFileChanges(c carapace.Context) carapace.Action {
+	opts := git.ChangeOpts{Staged: false, Unstaged: true}
+	var cached, err = diffCmd.Flags().GetBool("cached")
+	if err == nil && cached {
+		opts = git.ChangeOpts{Staged: true, Unstaged: false}
+	}
+	return git.ActionChanges(opts).Invoke(c).ToMultiPartsA("/").StyleF(style.ForPath)
 }
