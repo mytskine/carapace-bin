@@ -40,6 +40,7 @@ func addDiffFlags(cmd *cobra.Command) {
 	cmd.Flags().BoolP("base", "1", false, "compare with base")
 	cmd.Flags().Bool("binary", false, "output a binary diff")
 	cmd.Flags().StringP("break-rewrites", "B", "", "Break complete rewrite changes into pairs of delete and create.")
+	cmd.Flags().Bool("cached", false, "View the changes you staged in the index/cache.")
 	cmd.Flags().Bool("check", false, "Warn if changes introduce conflict markers or whitespace errors")
 	cmd.Flags().String("color", "", "Show colored diff.")
 	cmd.Flags().String("color-moved", "", "Moved lines of code are colored differently.")
